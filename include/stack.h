@@ -19,7 +19,7 @@ private:
 	sType* st;
 	int size; // размер стека
 public:
-	Stack(int s = 10); // конструктор
+	Stack(int s=10); // конструктор
 	Stack(const Stack<sType> &s);  // конструктор копирования
 	~Stack();  // деструктор
 	int GetSize() const;  // количество элементов в стеке
@@ -34,18 +34,27 @@ public:
 template <class sType>
 Stack<sType>::Stack(int s)
 {
-	size = s;
-	top = 0;
-	st = new sType[size];
+	if ((s > 0)&&(s<10000)) {
+		size = s;
+		top = -1;
+		st = new sType[size];
+	}
+	else
+		throw "negative length";
 }
 
 template <class sType>
 Stack<sType>::Stack(const Stack<sType> &s)
 {
-	size = s.size;
-	st = new sType[size];
-	for (int i = 0; i < size; i++)
-		st[i] = s.st[i];
+	if ((s > 0) && (s<10000)) {
+		size = s.size;
+		top = s.top;
+		st = new sType[size];
+		for (int i = 0; i < size; i++)
+			st[i] = s.st[i];
+	}
+	else
+		throw "negative length";
 }
 
 template <class sType>
@@ -63,8 +72,8 @@ int Stack<sType>::GetSize() const
 template <class sType>
 void Stack<sType>::Push(const sType &v)
 {
-	if (top < Size)
-		st[top++] = v;
+	if (top < size)
+		st[++top] = v;
 	else
 	{
 		sType *temp;
@@ -83,17 +92,17 @@ void Stack<sType>::Push(const sType &v)
 template <class sType>
 sType Stack<sType>::Pop() {
 	if (!IsEmpty())
-		return st[top--]
+		return st[top--];
 	else
-		throw "Empty!"
+		throw "Empty!";
 }
 
 template <class sType>
 sType Stack<sType>::Peek() {
 	if (!IsEmpty())
-		return st[top]
+		return st[top];
 	else
-		throw "Empty!"
+		throw "Empty!";
 }
 
 template <class sType>
@@ -103,7 +112,7 @@ bool Stack<sType>::IsEmpty() const {
 
 template <class sType>
 void Stack<sType>::Clean() {
-	top = 0;
+	top = -1;
 	for (int i = 0; i < size; i++)
 		st[i] = 0;
 }
