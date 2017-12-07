@@ -34,6 +34,8 @@ public:
 	bool IsEmpty() const;  // проверка на пустоту
 	void Clean(); // очистка стека
 	void Convert(); // конвертирование стека
+	bool operator==(const Stack<sType>& s) const;
+	bool operator!=(const Stack<sType>& s) const;
 	friend ostream & operator<<(ostream &out, const Stack<sType> &mt) // печать стека
 	{
 		for (int i = 0; i < mt.size; i++)
@@ -138,4 +140,28 @@ void Stack<sType>::Convert()
 	}
 }
 
+template<class sType>
+inline bool Stack<sType>::operator==(const Stack<sType>& s) const
+{
+	if (this != &s)
+	{
+		if (size == s.size)
+		{
+			for (int i = 0; i < size; i++)
+				if (st[i] != s.st[i])
+					return false;
+			return true;
+		}
+		else
+			return false;
+	}
+	else
+		return true;
+}
+
+template<class sType>
+inline bool Stack<sType>::operator!=(const Stack<sType>& s) const
+{
+	return (!(*this == s));
+}
 #endif

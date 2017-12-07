@@ -12,14 +12,16 @@ protected:
 public:
 	TestStackLexem()
 	{
-		s1.Push(10.0);    s2.Push(10.0);
-		s1.Push('+');	  s2.Push(12.0);
-		s1.Push('(');	  s2.Push(5.0);
-		s1.Push(12.0);    s2.Push(3.0);
-		s1.Push('-');     s2.Push('*');
-		s1.Push(5.0);     s2.Push('-');
-		s1.Push('*');     s2.Push('+');
-		s1.Push(3.0);
+		s1.Push(5.0);     s2.Push(5.0);
+		s1.Push('+');     s2.Push(5.0);
+		s1.Push(5.0);     s2.Push('+');
+		s1.Push('+');     s2.Push(2.0);
+		s1.Push('(');     s2.Push(4.0);
+		s1.Push(2.0);     s2.Push('*');
+		s1.Push('*');     s2.Push(1.0);
+		s1.Push(4.0);     s2.Push('-');
+		s1.Push('-');     s2.Push('+');
+		s1.Push(1.0);
 		s1.Push(')');
 	}
 	~TestStackLexem() {}
@@ -74,7 +76,7 @@ INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt));
 
 TEST_F(TestStackLexem, work_convert_string_to_stack)
 {
-	string a = "10+(12-5*3)";
+	string a = "5+5+(2*4-1)";
 	Stack<Lexem> b = convertstr(a);
 	EXPECT_EQ(s1, b);
 }
@@ -86,5 +88,5 @@ TEST_F(TestStackLexem, work_polish_notation)
 
 TEST_F(TestStackLexem, work_the_solution_of_the_expression)
 {
-	EXPECT_EQ(7, sol(s1));
+	EXPECT_EQ(17, sol(s1));
 }
