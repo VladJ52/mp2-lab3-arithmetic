@@ -351,7 +351,7 @@ Stack<Lexem> convertstr(const string& s)
 	return stack;
 }
 
-Stack<Lexem> polish_notation(const Stack<Lexem>& s)
+Stack<Lexem> polishnot(const Stack<Lexem>& s)
 {
 	Stack<Lexem> stack_1 = s;
 	stack_1.Convert();

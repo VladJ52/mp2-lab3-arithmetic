@@ -54,6 +54,24 @@ public:
 	~ParArithmetic3() {}
 };
 
+TEST_P(ParArithmetic, isIncorrect1)
+{
+	EXPECT_EQ(false, iscorrect(s));
+}
+INSTANTIATE_TEST_CASE_P(i1, ParArithmetic, ::testing::ValuesIn(t));
+
+TEST_P(ParArithmetic2, isIncorrect2)
+{
+	EXPECT_EQ(true, iscorrect(s2));
+}
+INSTANTIATE_TEST_CASE_P(i2, ParArithmetic2, ::testing::ValuesIn(tt));
+
+TEST_P(ParArithmetic3, isIncorrect3)
+{
+	EXPECT_EQ(10, sol(convertstr(s3)));
+}
+INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt));
+
 TEST_F(TestStackLexem, work_convert_string_to_stack)
 {
 	string a = "10+(12-5*3)";
