@@ -9,7 +9,12 @@
 // при вставке в полный стек должна перевыдел€тьс€ пам€ть
 
 // ќбъ€вление шаблонного стека
+
+#ifndef __Stack_H__
+#define __Stack_H__
 #include <iostream>
+#include <string>
+
 using namespace std;
 template <class sType>
 class Stack 
@@ -28,13 +33,21 @@ public:
 	sType Peek(); //  просмотр верхнего элемента (без удалени€)
 	bool IsEmpty() const;  // проверка на пустоту
 	void Clean(); // очистка стека
+	void Convert(); // конвертирование стека
+	friend ostream & operator<<(ostream &out, const Stack<sType> &mt) // печать стека
+	{
+		for (int i = 0; i < mt.size; i++)
+			out << mt.st[i] << " ";
+		out << endl;
+		return out;
+	}
 };
 
 // –еализаци€ шаблонного стека
 template <class sType>
-Stack<sType>::Stack(int s)
+inline Stack<sType>::Stack(int s)
 {
-	if ((s > 0)&&(s<10000)) {
+	if ((s > 0)&&(s<1000000)) {
 		size = s;
 		top = -1;
 		st = new sType[size];
@@ -44,17 +57,13 @@ Stack<sType>::Stack(int s)
 }
 
 template <class sType>
-Stack<sType>::Stack(const Stack<sType> &s)
+inline Stack<sType>::Stack(const Stack<sType> &s)
 {
-	if ((s > 0) && (s<10000)) {
 		size = s.size;
 		top = s.top;
 		st = new sType[size];
 		for (int i = 0; i < size; i++)
 			st[i] = s.st[i];
-	}
-	else
-		throw "negative length";
 }
 
 template <class sType>
@@ -116,3 +125,17 @@ void Stack<sType>::Clean() {
 	for (int i = 0; i < size; i++)
 		st[i] = 0;
 }
+
+template <class sType>
+void Stack<sType>::Convert()
+{
+	sType a;
+	for (int i = 0; i < (size / 2); i++)
+	{
+		a = st[i];
+		st[i] = st[size - i - 1];
+		st[size - i - 1] = a;
+	}
+}
+
+#endif
