@@ -26,6 +26,7 @@ public:
 	bool retb() const;
 	friend ostream& operator<< (ostream& out, const Lexem &v);
 };
+
 double rankn(const double a, const int i);
 double convertn(const string &s);
 int signpr(const char c);
@@ -34,4 +35,5 @@ bool iscorrect(const string &s);
 Stack<Lexem> convertstr(const string &s);
 Stack<Lexem> polishnot(const Stack<Lexem> &s);
 double sol(const Stack<Lexem> &s);
+
 #endif

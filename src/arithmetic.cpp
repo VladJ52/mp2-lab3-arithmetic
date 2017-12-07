@@ -169,88 +169,90 @@ bool iscorrect(const string &s)
 		int f = 0;
 		int t = 0;
 		if ((sign.find(c[1]) != sign.npos) && (c[1] != '-'))
+		{
 			cout << "Sign at the beginning of the expression";
 			return false;
-			if (sign.find(c[len - 2]) != sign.npos)
+		}
+		if (sign.find(c[len - 2]) != sign.npos)
+		{
+			cout << "The sign at the end of the expression" << endl;
+			return false;
+		}
+		for (int i = 1; i < len - 1; i++)
+		{
+			if (wrongsign.find(c[i]) != wrongsign.npos)
 			{
-				cout << "The sign at the end of the expression" << endl;
+				cout << "Wrong sign" << endl;
 				return false;
 			}
-			for (int i = 1; i < len - 1; i++)
+			if ((sign.find(c[i]) != sign.npos) && (sign.find(c[i + 1]) != sign.npos))
 			{
-				if (wrongsign.find(c[i]) != wrongsign.npos)
-				{
-					cout << "Wrong sign" << endl;
-					return false;
-				}
-				if ((sign.find(c[i]) != sign.npos) && (sign.find(c[i + 1]) != sign.npos))
-				{
-					cout << "Two sign in a row" << endl;
-					return false;
-				}
-				if ((sign.find(c[i]) != sign.npos) && (c[i + 1] == ')'))
-				{
-					cout << "Sign before close parenthesis" << endl;
-					return false;
-				}
-				if ((c[i] == '(') && (c[i + 1] != '-') && (sign.find(c[i + 1]) != sign.npos))
-				{
-					cout << "Sign after open parenthesis" << endl;
-					return false;
-				}
-				if ((c[i] == ')') && (c[i + 1] == '('))
-				{
-					cout << "Not enough sign" << endl;
-					return false;
-				}
-				if ((c[i] == '(') && (c[i + 1] == ')'))
-				{
-					cout << "Not enough expression" << endl;
-					return false;
-				}
-				if ((c[i] >= '0') && (c[i] <= '9') && (c[i + 1] == '('))
-				{
-					cout << "Lost sign" << endl;
-					return false;
-				}
-				if ((c[i] == ')') && (c[i + 1] >= '0') && (c[i + 1] <= '9'))
-				{
-					cout << "Lost sign" << endl;
-					return false;
-				}
-				if ((c[i] == '.') && (((c[i + 1] <= '0') || (c[i + 1] >= '9')) || ((c[i - 1] <= '0') || (c[i - 1] >= '9'))))
+				cout << "Two sign in a row" << endl;
+				return false;
+			}
+			if ((sign.find(c[i]) != sign.npos) && (c[i + 1] == ')'))
+			{
+				cout << "Sign before close parenthesis" << endl;
+				return false;
+			}
+			if ((c[i] == '(') && (c[i + 1] != '-') && (sign.find(c[i + 1]) != sign.npos))
+			{
+				cout << "Sign after open parenthesis" << endl;
+				return false;
+			}
+			if ((c[i] == ')') && (c[i + 1] == '('))
+			{
+				cout << "Not enough sign" << endl;
+				return false;
+			}
+			if ((c[i] == '(') && (c[i + 1] == ')'))
+			{
+				cout << "Not enough expression" << endl;
+				return false;
+			}
+			if ((c[i] >= '0') && (c[i] <= '9') && (c[i + 1] == '('))
+			{
+				cout << "Lost sign" << endl;
+				return false;
+			}
+			if ((c[i] == ')') && (c[i + 1] >= '0') && (c[i + 1] <= '9'))
+			{
+				cout << "Lost sign" << endl;
+				return false;
+			}
+			if ((c[i] == '.') && (((c[i + 1] <= '0') || (c[i + 1] >= '9')) || ((c[i - 1] <= '0') || (c[i - 1] >= '9'))))
+			{
+				cout << "Wrong signs" << endl;
+				return false;
+			}
+			if (((c[i] >= '0') && (c[i] <= '9')) || (c[i] == '.'))
+			{
+				if ((c[i] == '.'))
+					t++;
+				if (t > 1)
 				{
 					cout << "Wrong signs" << endl;
 					return false;
 				}
-				if (((c[i] >= '0') && (c[i] <= '9')) || (c[i] == '.'))
-				{
-					if ((c[i] == '.'))
-						t++;
-					if (t > 1)
-					{
-						cout << "Wrong signs" << endl;
-						return false;
-					}
-				}
-				else
-					t = 0;
-				if (c[i] == ')')
-					f--;
-				if (f < 0)
-				{
-					cout << "More )" << endl;
-					return false;
-				}
-				if (c[i] == '(')
-					f++;
 			}
-			if (f > 0)
+			else
+				t = 0;
+			if (c[i] == ')')
+				f--;
+			if (f < 0)
 			{
-				cout << "More (" << endl;
+				cout << "More )" << endl;
 				return false;
 			}
-			return true;
+			if (c[i] == '(')
+				f++;
+		}
+		if (f > 0)
+		{
+			cout << "More (" << endl;
+			return false;
+		}
+		return true;
 	}
 	else
 	{
@@ -308,7 +310,10 @@ Stack<Lexem> convertstr(const string& s)
 				{
 					if (string_number != "")
 					{
-						double k = convertn(string_number);
+						// size_t p;
+						// s = "123+456" x = stod(s, &p) ==> x = 123.0 p = 3 (индекс +)
+						double k = stod(string_number, NULL);//convertn(string_number);
+						//double k = atof(string_number.c_str());
 						if (f)
 						{
 							k *= -1;
