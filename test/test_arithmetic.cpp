@@ -12,15 +12,17 @@ protected:
 public:
 	TestStackLexem()
 	{
-		s1.Push(5.0);     s2.Push(5.0);
+		s1.Push(25.0);    s2.Push(25.0);
 		s1.Push('+');     s2.Push(5.0);
 		s1.Push(5.0);     s2.Push('+');
-		s1.Push('+');     s2.Push(2.0);
-		s1.Push('(');     s2.Push(4.0);
-		s1.Push(2.0);     s2.Push('*');
+		s1.Push('+');     s2.Push(10.0);
+		s1.Push(10.0);    s2.Push('+');
+		s1.Push('-');     s2.Push(3.0);
+		s1.Push('(');     s2.Push(2.0);
+		s1.Push(3.0);     s2.Push('*');
 		s1.Push('*');     s2.Push(1.0);
-		s1.Push(4.0);     s2.Push('-');
-		s1.Push('-');     s2.Push('+');
+		s1.Push(2.0);     s2.Push('-');
+		s1.Push('-');     s2.Push('-');
 		s1.Push(1.0);
 		s1.Push(')');
 	}
@@ -28,8 +30,8 @@ public:
 };
 
 string t[18] = { "", "+", "25+-5", "*25+5", "25+5*", "25 + 5", "(", ")", "(25+5", "25+5)", "25(5+5)", "(25+5)5", "25.5.5", "25..5", "a.5+5", "(2+3)(5+6)", "(25+5+)", "(+25+5)" };
-string tt[3] = { "25+5+10-(3*2-1)", "-5", "(-5)" };
-string ttt[5] = { "6+4", "13-3", "5*2", "50/5", "-5+15" };
+string tt[3] = { "25+5+10-(3*2-1)", "-5" };
+string ttt[5] = { "6+4-", "13-3+(", "5*2+", "50/5)", "-5+15" };
 
 class ParArithmetic : public ::testing::TestWithParam<string>
 {
@@ -76,7 +78,7 @@ INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt));
 
 TEST_F(TestStackLexem, work_convert_string_to_stack)
 {
-	string a = "5+5+(2*4-1)";
+	string a = "25+5+10-(3*2-1)";
 	Stack<Lexem> b = convertstr(a);
 	EXPECT_EQ(s1, b);
 }
@@ -88,5 +90,5 @@ TEST_F(TestStackLexem, work_polish_notation)
 
 TEST_F(TestStackLexem, work_the_solution_of_the_expression)
 {
-	EXPECT_EQ(17, sol(s1));
+	EXPECT_EQ(35, sol(s1));
 }

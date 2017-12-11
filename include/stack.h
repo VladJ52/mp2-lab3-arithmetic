@@ -24,7 +24,8 @@ private:
 	sType* st;
 	int size; // размер стека
 public:
-	Stack(int s=10); // конструктор
+	Stack(); // конструктор
+	Stack(const int s);
 	Stack(const Stack<sType> &s);  // конструктор копировани€
 	~Stack();  // деструктор
 	int GetSize() const;  // количество элементов в стеке
@@ -47,17 +48,23 @@ public:
 
 // –еализаци€ шаблонного стека
 template <class sType>
-inline Stack<sType>::Stack(int s)
+inline Stack<sType>::Stack()
 {
-	if ((s > 0)&&(s<1000000)) {
-		size = s;
-		top = -1;
+		size = 10;
+		top = 0;
 		st = new sType[size];
-	}
-	else
-		throw "negative length";
 }
 
+template <class sType>
+inline Stack<sType>::Stack(const int s)
+{
+	if ((s > 1000000) || (s < 0))
+		throw "negative";
+	size = s;
+	top = 0;
+	st = new sType[size];
+
+}
 template <class sType>
 inline Stack<sType>::Stack(const Stack<sType> &s)
 {
@@ -81,29 +88,30 @@ int Stack<sType>::GetSize() const
 }
 
 template <class sType>
-void Stack<sType>::Push(const sType &v)
+inline void Stack<sType>::Push(const sType &v)
 {
-	if (top < size)
-		st[++top] = v;
-	else
-	{
-		sType *temp;
-		temp = new sType[size];
-		for (int i=0; i<size;i++)
-		temp[i] = st[i];
-		delete[] st;
-		st = new sType[size + 1];
-		for (int i = 0; i < size; i++)
-			st[i] = temp[i];
-		delete[] temp;
-		st[top++] = v;
-	}
+		if (size == top)
+		{
+			Stack<sType> s(size + 10);
+			for (int i = 0; i < size; i++)
+				s.st[i] = st[i];
+			s.st[top] = v;
+			s.top = top + 1;
+			*this = s;
+		}
+		else
+		{
+			st[top] = v;
+			top++;
+		}
 }
 
 template <class sType>
 sType Stack<sType>::Pop() {
-	if (!IsEmpty())
-		return st[top--];
+	if (!IsEmpty()) {
+		return st[--top];
+		top--;
+	}
 	else
 		throw "Empty!";
 }
@@ -111,19 +119,19 @@ sType Stack<sType>::Pop() {
 template <class sType>
 sType Stack<sType>::Peek() {
 	if (!IsEmpty())
-		return st[top];
+		return st[--top];
 	else
 		throw "Empty!";
 }
 
 template <class sType>
 bool Stack<sType>::IsEmpty() const {
-	return top == -1;
+	return top == 0;
 }
 
 template <class sType>
 void Stack<sType>::Clean() {
-	top = -1;
+	top = 0;
 	for (int i = 0; i < size; i++)
 		st[i] = 0;
 }

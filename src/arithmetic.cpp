@@ -261,7 +261,7 @@ bool iscorrect(const string &s)
 	}
 }
 
-Stack<Lexem> convertstr(const string& s)
+Stack<Lexem> convertstr(const string & s)
 {
 	if (!iscorrect(s))
 		throw "Not correct";
@@ -310,10 +310,7 @@ Stack<Lexem> convertstr(const string& s)
 				{
 					if (string_number != "")
 					{
-						// size_t p;
-						// s = "123+456" x = stod(s, &p) ==> x = 123.0 p = 3 (индекс +)
-						double k = stod(string_number, NULL);//convertn(string_number);
-						//double k = atof(string_number.c_str());
+						double k = stod(string_number, NULL);
 						if (f)
 						{
 							k *= -1;
