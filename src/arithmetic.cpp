@@ -164,7 +164,7 @@ bool iscorrect(const string &s)
 		c = c + s;
 		c = c + ' ';
 		string sign = "*+-/";
-		string wrongsign = "=\|&!`~@%$^.,?;:";
+		string wrongsign = "=\\|&!`~@#%^_?,:;'\"¹ ";
 		int len = c.length();
 		int f = 0;
 		int t = 0;
@@ -261,33 +261,33 @@ bool iscorrect(const string &s)
 	}
 }
 
-Stack<Lexem> convertstr(const string & s)
+Stack<Lexem> convertstr(const string & c)
 {
-	if (!iscorrect(s))
+	if (!iscorrect(c))
 		throw "Not correct";
-	string s1;
-	s1 = s1 + ' ';
-	s1 = s1 + s;
-	int len = s1.length();
+	string s;
+	s = s + ' ';
+	s = s + c;
+	int len = s.length();
 	Stack<Lexem> stack(len);
 	string string_number;
 	string string_parametr;
 	Lexem b;
 	int j = 1;
 	bool f = false;
-	if (s1[1] == '-')
+	if (s[1] == '-')
 	{
 		f = true;
 		j = 2;
 	}
 	for (int i = j; i < len; i++)
 	{
-		if ((s1[i] == '-') && (s1[i - 1] == '('))
+		if ((s[i] == '-') && (s[i - 1] == '('))
 			f = true;
 		else
 		{
-			if ((((s1[i] >= 'a') && (s1[i] <= 'z')) || ((s1[i] >= 'A') && (s1[i] <= 'Z'))) || ((s1[i] <= '9') && (s1[i] >= '0') && (string_parametr != "")))
-				string_parametr = string_parametr + s1[i];
+			if ((((s[i] >= 'a') && (s[i] <= 'z')) || ((s[i] >= 'A') && (s[i] <= 'Z'))) || ((s[i] <= '9') && (s[i] >= '0') && (string_parametr != "")))
+				string_parametr = string_parametr + s[i];
 			else
 			{
 				if (string_parametr != "")
@@ -304,13 +304,13 @@ Stack<Lexem> convertstr(const string & s)
 					stack.Push(b);
 					string_parametr = "";
 				}
-				if ((((s1[i] <= '9') && (s1[i] >= '0')) || (s1[i] == '.')))
-					string_number = string_number + s1[i];
+				if ((((s[i] <= '9') && (s[i] >= '0')) || (s[i] == '.')))
+					string_number = string_number + s[i];
 				else
 				{
 					if (string_number != "")
 					{
-						double k = stod(string_number, NULL);
+						double k = convertn(string_number);
 						if (f)
 						{
 							k *= -1;
@@ -320,7 +320,7 @@ Stack<Lexem> convertstr(const string & s)
 						stack.Push(b);
 						string_number = "";
 					}
-					b = s1[i];
+					b = s[i];
 					stack.Push(b);
 				}
 			}
@@ -352,6 +352,7 @@ Stack<Lexem> convertstr(const string & s)
 	}
 	return stack;
 }
+
 
 Stack<Lexem> polishnot(const Stack<Lexem>& s)
 {

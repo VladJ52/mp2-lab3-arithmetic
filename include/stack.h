@@ -44,6 +44,7 @@ public:
 		out << endl;
 		return out;
 	}
+	Stack<sType>& operator=(const Stack<sType>& s);
 };
 
 // Реализация шаблонного стека
@@ -171,5 +172,23 @@ template<class sType>
 inline bool Stack<sType>::operator!=(const Stack<sType>& s) const
 {
 	return (!(*this == s));
+}
+
+template<class sType>
+inline Stack<sType>& Stack<sType>::operator=(const Stack<sType>& s)
+{
+	if (this != &s)
+	{
+		if (size != s.size)
+		{
+			delete[] st;
+			size = s.size;
+			st = new sType[size];
+		}
+		top = s.top;
+		for (int i = 0; i < size; i++)
+			st[i] = s.st[i];
+	}
+	return *this;
 }
 #endif
