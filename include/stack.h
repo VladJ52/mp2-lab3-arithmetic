@@ -117,10 +117,8 @@ sType Stack<sType>::Pop() {
 
 template <class sType>
 sType Stack<sType>::Peek() {
-	if (!IsEmpty()){
-		return st[--top];
-		top++;
-	}
+	if (!IsEmpty())
+		return st[top-1];
 	else
 		throw "Empty!";
 }
