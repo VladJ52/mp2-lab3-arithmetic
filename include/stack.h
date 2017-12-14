@@ -51,7 +51,7 @@ public:
 template <class sType>
 inline Stack<sType>::Stack()
 {
-		size = 10;
+		size = 1;
 		top = 0;
 		st = new sType[size];
 }
@@ -93,7 +93,7 @@ inline void Stack<sType>::Push(const sType &v)
 {
 		if (size == top)
 		{
-			Stack<sType> s(size + 10);
+			Stack<sType> s(size + 1);
 			for (int i = 0; i < size; i++)
 				s.st[i] = st[i];
 			s.st[top] = v;
@@ -109,18 +109,18 @@ inline void Stack<sType>::Push(const sType &v)
 
 template <class sType>
 sType Stack<sType>::Pop() {
-	if (!IsEmpty()) {
+	if (!IsEmpty()) 
 		return st[--top];
-		top--;
-	}
 	else
 		throw "Empty!";
 }
 
 template <class sType>
 sType Stack<sType>::Peek() {
-	if (!IsEmpty())
+	if (!IsEmpty()){
 		return st[--top];
+		top++;
+	}
 	else
 		throw "Empty!";
 }

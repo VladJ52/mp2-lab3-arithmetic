@@ -164,7 +164,7 @@ bool iscorrect(const string &s)
 		c = c + s;
 		c = c + ' ';
 		string sign = "*+-/";
-		string wrongsign = "=\\|&!`~@#%^_?,:;'\"¹ ";
+		string wrongsign = "=\\|&!`~@#%^_?,:;'\¹ ";
 		int len = c.length();
 		int f = 0;
 		int t = 0;
@@ -269,7 +269,7 @@ Stack<Lexem> convertstr(const string & c)
 	s = s + ' ';
 	s = s + c;
 	int len = s.length();
-	Stack<Lexem> stack(len);
+	Stack<Lexem> stack;
 	string string_number;
 	string string_parametr;
 	Lexem b;
@@ -358,7 +358,7 @@ Stack<Lexem> polishnot(const Stack<Lexem>& s)
 {
 	Stack<Lexem> stack_1 = s;
 	stack_1.Convert();
-	Stack<Lexem> stack_2(s.GetSize());
+	Stack<Lexem> stack_2;
 	Lexem element_stack_1;
 	Stack<char> sign_stack;
 	while (!(stack_1.IsEmpty()))

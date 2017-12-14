@@ -3,6 +3,7 @@
 #include "arithmetic.h"
 #include <gtest.h>
 
+
 class TestStackLexem : public ::testing::Test
 {
 protected:
@@ -31,7 +32,7 @@ public:
 
 string t[17] = { "", "+", "25+-5", "*25+5", "25+5*", "(", ")", "(25+5", "25+5)", "25(5+5)", "(25+5)5", "25.5.5", "25..5", "a.5+5", "(2+3)(5+6)", "(25+5+)", "(+25+5)" };
 string tt[2] = { "25+5+10-(3*2-1)", "-5" };
-string ttt[5] = { "6+4", "13-3", "5*2", "50/5", "5+15" };
+string ttt[6] = { "6+4", "13-3", "5*2", "50/5", "5+5", "10/5+5" };
 
 class ParArithmetic : public ::testing::TestWithParam<string>
 {
@@ -74,7 +75,7 @@ TEST_P(ParArithmetic3, isIncorrect3)
 {
 	EXPECT_EQ(10, sol(convertstr(s3)));
 }
-INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt));
+INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt)); 
 
 TEST_F(TestStackLexem, work_convert_string_to_stack)
 {
