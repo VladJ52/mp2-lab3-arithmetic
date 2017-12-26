@@ -7,23 +7,28 @@
 // Класс лексем
 class Lexem 
 {
+	string parametr;
 	double num;
 	char sign;
-	bool flag;
+	int flag;
 public:
 	Lexem() {};
+	Lexem(const int n, const string s = "", const double d = 0.0, const char c = '0');
 	Lexem(const Lexem &s);
+	Lexem(const string &s);
 	Lexem(const double q);
 	Lexem(const char s);
 	~Lexem() {};
 	Lexem& operator=(const Lexem& v);
+	Lexem& operator=(const string& s);
 	Lexem& operator=(const double n);
 	Lexem& operator=(const char s);
 	bool operator==(const Lexem& v) const;
 	bool operator!=(const Lexem& v) const;
+	string retp() const;
 	double retn() const;
 	char rets() const;
-	bool retb() const;
+	int retb() const;
 	friend ostream& operator<< (ostream& out, const Lexem &v);
 };
 

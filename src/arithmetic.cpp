@@ -3,8 +3,16 @@
 #include <iostream>
 #include <cstring>
 
+Lexem::Lexem(const int n, const string s, const double d, const char c)
+{
+	parametr = s;
+	num = n;
+	sign = c;
+	flag = n;
+}
 Lexem::Lexem(const Lexem& s)
 {
+	parametr = s.parametr;
 	num = s.num;
 	sign = s.sign;
 	flag = s.flag;
@@ -13,53 +21,85 @@ Lexem::Lexem(const Lexem& s)
 Lexem::Lexem(const double q)
 {
 	num = q;
-	flag = true;
+	flag = 1;
 }
 
+Lexem::Lexem(const string & s)
+{
+	parametr = s;
+	flag = 2;
+}
 Lexem::Lexem(const char s)
 {
 	sign = s;
-	flag = false;
+	flag = 0;
 }
 
 Lexem& Lexem::operator=(const Lexem& v)
 {
 	num = v.num;
+	parametr = v.parametr;
 	sign = v.sign;
 	flag = v.flag;
+	return *this;
+}
+
+Lexem& Lexem::operator=(const string & s)
+{
+	parametr = s;
+	flag = 2;
 	return *this;
 }
 
 Lexem& Lexem::operator=(const double n)
 {
 	num = n;
-	flag = true;
+	flag = 1;
 	return *this;
 }
 
 Lexem& Lexem::operator=(const char s)
 {
 	sign = s;
-	flag = false;
+	flag = 0;
 	return *this;
 }
 
 bool Lexem::operator==(const Lexem & v) const
 {
 	if (this != &v)
+	{
 		if (flag == v.flag)
-			if (flag)
+		{
+			if (flag == 1)
+			{
 				if (num != v.num)
 					return false;
 				else
 					return true;
+			}
 			else
-				if (sign != v.sign)
-					return false;
+			{
+				if (flag == 0)
+				{
+					if (sign != v.sign)
+						return false;
+					else
+						return true;
+				}
 				else
-					return true;
+				{
+					if (parametr != v.parametr)
+						return false;
+					else
+						return true;
+				}
+			}
+
+		}
 		else
 			return false;
+	}
 	else
 		return true;
 }
@@ -67,6 +107,11 @@ bool Lexem::operator==(const Lexem & v) const
 bool Lexem::operator!=(const Lexem & v) const
 {
 	return (!(*this == v));
+}
+
+string Lexem::retp() const
+{
+	return parametr;
 }
 
 double Lexem::retn() const
@@ -79,17 +124,20 @@ char Lexem::rets() const
 	return sign;
 }
 
-bool Lexem::retb() const
+int Lexem::retb() const
 {
 	return flag;
 }
 
 ostream& operator<<(ostream& out, const Lexem &v)
 {
-	if (v.flag)
+	if (v.flag == 1)
 		out << v.num;
 	else
-		out << v.sign;
+		if (v.flag == 0)
+			out << v.sign;
+		else
+			out << v.parametr;
 	return out;
 }
 
@@ -275,7 +323,6 @@ Stack<Lexem> convertstr(const string & c)
 	string string_parametr;
 	Lexem b;
 	int j = 1;
-	int k = 1;
 	bool f = false;
 	if (s[1] == '-')
 	{
@@ -289,21 +336,17 @@ Stack<Lexem> convertstr(const string & c)
 		else
 		{
 			if ((((s[i] >= 'a') && (s[i] <= 'z')) || ((s[i] >= 'A') && (s[i] <= 'Z'))) || ((s[i] <= '9') && (s[i] >= '0') && (string_parametr != "")))
-				for (int i = 0; i < len; i++)
-					string_parametr = string_parametr + s[i];
+				string_parametr = string_parametr + s[i];
 			else
 			{
 				if (string_parametr != "")
 				{
-					cout << "Write parametr " << string_parametr << endl;
-					double parametr;
-					cin >> parametr;
 					if (f)
 					{
-						parametr *= -1;
+						string_parametr = '-' + string_parametr;
 						f = false;
 					}
-					b = parametr;
+					b = string_parametr;
 					stack.Push(b);
 					string_parametr = "";
 				}
@@ -331,15 +374,12 @@ Stack<Lexem> convertstr(const string & c)
 	}
 	if (string_parametr != "")
 	{
-		cout << "Write parametr " << string_parametr << endl;
-		double parametr;
-		cin >> parametr;
 		if (f)
 		{
-			parametr *= -1;
+			string_parametr = '-' + string_parametr;
 			f = false;
 		}
-		b = parametr;
+		b = string_parametr;
 		stack.Push(b);
 	}
 	if (string_number != "")
@@ -367,7 +407,7 @@ Stack<Lexem> polishnot(const Stack<Lexem>& s)
 	while (!(stack_1.IsEmpty()))
 	{
 		element_stack_1 = stack_1.Pop();
-		if (element_stack_1.retb())
+		if (element_stack_1.retb() != 0)
 			stack_2.Push(element_stack_1);
 		else
 		{
@@ -403,22 +443,66 @@ Stack<Lexem> polishnot(const Stack<Lexem>& s)
 
 double sol(const Stack<Lexem>& s)
 {
-	Stack<Lexem> stack = polishnot(s);
-	cout << stack << endl;
-	stack.Convert();
-	Stack<double> number_stack;
-	while (!(stack.IsEmpty()))
+Stack<Lexem> stack_p = s;
+Stack<Lexem> stack;
+int i = stack_p.GetSize();
+Lexem* st = new Lexem[i / 2 + 1];
+i = 0;
+while (!(stack_p.IsEmpty()))
+{
+	Lexem b = stack_p.Pop();
+	if (b.retb() == 2)
 	{
-		Lexem d = stack.Pop();
-		if (d.retb())
-			number_stack.Push(d.retn());
+		int k = 1;
+		string min = b.retp();
+		if (min[0] == '-')
+		{
+			k = -1;
+			min.erase(0, 1);
+			b = min;
+		}
+		bool f = true;
+		for (int j = 0; ((j < i) && (f)); j++)
+			if (st[j].retp() == b.retp())
+			{
+				f = false;
+				b = st[j];
+			}
+		if (f)
+		{
+			cout << "Write parametr " << b.retp() << endl;
+			double d;
+			cin >> d;
+			Lexem a(b.retb(), b.retp(), d, b.rets());
+			b = k * d;
+			stack.Push(b);
+			st[i++] = a;
+		}
 		else
 		{
-			double number_1 = number_stack.Pop();
-			double number_2 = number_stack.Pop();
-			char sign = d.rets();
-			number_stack.Push(evaluating(number_1, number_2, sign));
+			Lexem e = b.retn();
+			if (k == -1)
+				e = k * b.retn();
+			stack.Push(e);
 		}
 	}
-	return number_stack.Peek();
+	else
+		stack.Push(b);
+}
+delete[] st;
+Stack<double> number_stack;
+while (!(stack.IsEmpty()))
+{
+	Lexem d = stack.Pop();
+	if (d.retb() != 0)
+		number_stack.Push(d.retn());
+	else
+	{
+		double number_1 = number_stack.Pop();
+		double number_2 = number_stack.Pop();
+		char sign = d.rets();
+		number_stack.Push(evaluating(number_1, number_2, sign));
+	}
+}
+return number_stack.Peek();
 }

@@ -32,7 +32,7 @@ public:
 
 string t[17] = { "", "+", "25+-5", "*25+5", "25+5*", "(", ")", "(25+5", "25+5)", "25(5+5)", "(25.0+5.0)5.0", "25.5.5", "25..5", "a.5+5", "(2+3)(5+6)", "(25+5+)", "(+25+5)" };
 string tt[2] = { "25+5+10-(3*2-1)", "-5" };
-string ttt[10] = { "-6+4*2*(1+1)", "13-3", "5*2", "50/5", "5+5", "2*(4+1)", "20.5-(12.25-1.5*1.5)-0.5", "a+b*c", "2*a+3/b-c", "-a+(-b+a)" };
+string ttt[8] = { "-6+4*2*(1+1)", "13-3", "5*2", "50/5", "5+5", "2*(4+1)", "20.5-(12.25-1.5*1.5)-0.5", "a+b*c"};
 
 class ParArithmetic : public ::testing::TestWithParam<string>
 {
@@ -73,7 +73,9 @@ INSTANTIATE_TEST_CASE_P(i2, ParArithmetic2, ::testing::ValuesIn(tt));
 
 TEST_P(ParArithmetic3, isIncorrect3)
 {
-	EXPECT_EQ(10, sol(convertstr(s3)));
+	Stack<Lexem> b = convertstr(s3);
+	b = polishnot(b);
+	EXPECT_EQ(10, sol(b));
 }
 INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt)); 
 
@@ -91,5 +93,5 @@ TEST_F(TestStackLexem, work_polish_notation)
 
 TEST_F(TestStackLexem, work_the_solution_of_the_expression)
 {
-	EXPECT_EQ(35, sol(s1));
+	EXPECT_EQ(35, sol(s2));
 }
